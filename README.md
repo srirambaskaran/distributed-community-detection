@@ -1,19 +1,20 @@
 # Distributed Implementation of Community Detection Algorithm
 
+The objective is to efficiently calculate edge betweenness centrality and optimize modularity to do community detection.
+
 This is a distributed implementation of popular Girvan-Newman algorithm for community detection. The algorithm and paper have been linked [here](https://arxiv.org/pdf/cond-mat/0112110.pdf).
 
-### Abstract from the paper: 
+## Possible Usecases
 
-> A number of recent studies have focused on the statistical properties of networked systems such
-as social networks and the World-Wide Web. Researchers have concentrated particularly on a
-few properties which seem to be common to many networks: **the small-world property, power-law
-degree distributions, and network transitivity**. In this paper, we highlight another property which is
-found in many networks, the property of community structure, in which **network nodes are joined
-together in tightly-knit groups between which there are only looser connections**.
+- Identify tight knit groups in the network, provide customized services to them.
+- Provide recommendations for movies based on the community structures.
+- Identify evolving communities. Influencers in communities who have high **note-betweenness centrality**.
 
 ### Edge-Betweenness Centrality
 
-It is defined by the number of shortest _paths_ between any two nodes that go through a given edge. This applies to both directed and undirected graphs.
+It is defined by the **_number of shortest paths_** between any two nodes that go through a given edge. This applies to both directed and undirected graphs.
+
+Calculating number of shortest paths requirs computing **all pair shortest paths** for a given graph. Asymptotic 
 
 ### Modulartiy
 
@@ -61,6 +62,8 @@ Graphs following simple models like Erdos-Renyi where presence of an edge has eq
 
   Identifying communities among users with an objective to find users with similar interest.
   Building a rating based graph where an edge is created based on the 
+  
+[DBPedia](http://wiki.dbpedia.org/develop/datasets/dbpedia-version-2016-10) - 6.6M entities (nodes) - Really Huge!
  
 Debuggung and testing:
 
