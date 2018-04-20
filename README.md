@@ -4,6 +4,19 @@ The objective is to efficiently calculate edge betweenness centrality and optimi
 
 This is a distributed implementation of popular Girvan-Newman algorithm for community detection. The algorithm and paper have been linked [here](https://arxiv.org/pdf/cond-mat/0112110.pdf).
 
+## Dataset
+
+[Movielens dataset](https://grouplens.org/datasets/movielens/20m/) - 20M user ratings
+
+  Identifying communities among users with an objective to find users with similar interest.
+  Building a rating based graph where an edge is created based on the 
+  
+[DBPedia](http://wiki.dbpedia.org/develop/datasets/dbpedia-version-2016-10) - 6.6M entities (nodes) - Really Huge!
+ 
+Debuggung and testing:
+
+[Movielens dataset(small)](https://grouplens.org/datasets/movielens/latest/)
+
 ## Possible Usecases
 
 - (Movie Lens) Identify tight knit groups in the network, provide customized services to them.
@@ -55,18 +68,4 @@ Graphs following simple models like Erdos-Renyi where presence of an edge has eq
 ## Proposed Architecture
 
 ![architecture](architecture.png)
-
-
-## Dataset
-
-[Movielens dataset](https://grouplens.org/datasets/movielens/20m/) - 20M user ratings
-
-  Identifying communities among users with an objective to find users with similar interest.
-  Building a rating based graph where an edge is created based on the 
-  
-[DBPedia](http://wiki.dbpedia.org/develop/datasets/dbpedia-version-2016-10) - 6.6M entities (nodes) - Really Huge!
- 
-Debuggung and testing:
-
-[Movielens dataset(small)](https://grouplens.org/datasets/movielens/latest/)
 
