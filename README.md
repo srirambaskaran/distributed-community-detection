@@ -17,6 +17,16 @@ Debuggung and testing:
 
 [Movielens dataset(small)](https://grouplens.org/datasets/movielens/latest/)
 
+
+### Abstract from the paper: 
+
+> A number of recent studies have focused on the statistical properties of networked systems such
+as social networks and the World-Wide Web. Researchers have concentrated particularly on a
+few properties which seem to be common to many networks: **the small-world property, power-law
+degree distributions, and network transitivity**. In this paper, we highlight another property which is
+found in many networks, the property of community structure, in which **network nodes are joined
+together in tightly-knit groups between which there are only looser connections**.
+
 ## Possible Usecases
 
 - (Movie Lens) Identify tight knit groups in the network, provide customized services to them.
