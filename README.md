@@ -6,9 +6,10 @@ This is a distributed implementation of popular Girvan-Newman algorithm for comm
 
 ## Possible Usecases
 
-- Identify tight knit groups in the network, provide customized services to them.
-- Provide recommendations for movies based on the community structures.
-- Identify evolving communities. Influencers in communities who have high **note-betweenness centrality**.
+- (Movie Lens) Identify tight knit groups in the network, provide customized services to them.
+- (Movie Lens) Provide recommendations for movies based on the community structures.
+- (Movie Lens) Identify evolving communities. Influencers in communities who have high **note-betweenness centrality**.
+- (DB Pedia) Optimize search on a topic by focussing on the community of related documents.
 
 ### Edge-Betweenness Centrality
 
