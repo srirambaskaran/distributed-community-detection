@@ -57,10 +57,12 @@ Graphs following simple models like Erdos-Renyi where presence of an edge has eq
 
 ## Dataset
 
-[Movielens dataset](https://grouplens.org/datasets/movielens/20m/) - 20M
+[Movielens dataset](https://grouplens.org/datasets/movielens/20m/) - 20M user ratings
+
   Identifying communities among users with an objective to find users with similar interest.
   Building a rating based graph where an edge is created based on the 
  
 Debuggung and testing:
+
 [Movielens dataset(small)](https://grouplens.org/datasets/movielens/latest/)
 
