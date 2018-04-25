@@ -4,6 +4,8 @@ The objective is to efficiently calculate edge betweenness centrality and optimi
 
 This is a distributed implementation of popular Girvan-Newman algorithm for community detection. The algorithm and paper have been linked [here](https://arxiv.org/pdf/cond-mat/0112110.pdf).
 
+Logic to calculate all-pair-shortest-path [https://gist.github.com/srirambaskaran/573927ee01f3673d3a9182bacbc9ed39](https://gist.github.com/srirambaskaran/573927ee01f3673d3a9182bacbc9ed39)
+
 ## Dataset
 
 [Movielens dataset](https://grouplens.org/datasets/movielens/20m/) - 20M user ratings
