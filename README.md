@@ -6,6 +6,27 @@ This is a distributed implementation of popular Girvan-Newman algorithm for comm
 
 Logic to calculate all-pair-shortest-path [https://gist.github.com/srirambaskaran/573927ee01f3673d3a9182bacbc9ed39](https://gist.github.com/srirambaskaran/573927ee01f3673d3a9182bacbc9ed39)
 
+
+## Chanllenges
+### Algorithm
+
+1. Running all pair shortest path algorithm. Efficiently pass short messages across different partitions in Spark.
+1. Computing graph measures: Betweenness-centrality
+
+### Technical
+1. Visualizing Large graphs (major constraint too).
+1. Querying graph, providing insights.
+1. Implementing a simple collaborative-filtering recommender system.
+
+## Proposed Architecture
+
+S3 -> Spark + GraphX -> TitanDB (backed by Cassandra, ElasticSearch) -> HTML + D3
+
+
+
+
+
+
 ## Dataset
 
 [Movielens dataset](https://grouplens.org/datasets/movielens/20m/) - 20M user ratings
@@ -76,8 +97,4 @@ Graphs following simple models like Erdos-Renyi where presence of an edge has eq
 - TitanDB/Neo4j for persisting graph.
 - D3 for visualization (Charts + Graph)
 - HTML + JQuery + Ajax (Lazy Loading)
-
-## Proposed Architecture
-
-![architecture](architecture.png)
 
