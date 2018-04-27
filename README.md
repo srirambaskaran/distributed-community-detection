@@ -98,3 +98,6 @@ Graphs following simple models like Erdos-Renyi where presence of an edge has eq
 - D3 for visualization (Charts + Graph)
 - HTML + JQuery + Ajax (Lazy Loading)
 
+
+Demo -> http://ec2-35-162-93-253.us-west-2.compute.amazonaws.com:8080/communitydetection/index.html
+
