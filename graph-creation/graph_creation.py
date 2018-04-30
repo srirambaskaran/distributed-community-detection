@@ -17,7 +17,7 @@ ratingRecord = sc.textFile(inputFile) \
     .map(lambda (movie, user, rating): (movie, user))
 
 # Grouping by movies and picking users
-coratedUserList = ratingRecord.groupByKey().values
+coratedUserList = ratingRecord.groupByKey().values()
 
 # Creating an edge between all pairs of users.
 graphEdges = coratedUserList.flatMap(lambda users : (x,y) for x in users for y in users if x != y)
