@@ -1,6 +1,9 @@
 from pyspark import SparkContext,SparkConf
 import os
 
+def all_pairs(users):
+	return [(x,y) for x in users for y in users if x != y]
+
 conf = SparkConf().setAppName("Create graph")
 sc   = SparkContext(conf=conf)
 
@@ -20,7 +23,7 @@ ratingRecord = sc.textFile(inputFile) \
 coratedUserList = ratingRecord.groupByKey().values()
 
 # Creating an edge between all pairs of users.
-graphEdges = coratedUserList.flatMap(lambda users : (x,y) for x in users for y in users if x != y)
+graphEdges = coratedUserList.flatMap(all_pairs)
 
 # Write into file
 graphEdges.saveAsTextFile(outputFile)
