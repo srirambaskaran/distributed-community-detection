@@ -3,7 +3,7 @@ import os
 import sys
 
 def all_pairs(users):
-	return [(x,y) for x in users for y in users if x != y]
+	return [((x,y),1) for x in users for y in users if x != y]
 
 conf = SparkConf().setAppName("Create graph")
 sc   = SparkContext(conf=conf)
@@ -27,8 +27,10 @@ ratingRecord = sc.textFile(inputFile) \
 # Grouping by movies and picking users
 coratedUserList = ratingRecord.groupByKey().values()
 
-# Creating an edge between all pairs of users.
-graphEdges = coratedUserList.flatMap(all_pairs)
+# Creating an edge between all pairs of users, set weight to number of corated movies.
+graphEdges = coratedUserList.flatMap(all_pairs) \
+			.reduceByKey(lambda x,y: x+y) \
+			.map(lambda ((user1, user2), weight): str(user1)+","+str(user2)+","+str(weight))
 
 # Write into file
 graphEdges.saveAsTextFile(outputFile)
