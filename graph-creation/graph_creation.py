@@ -8,7 +8,7 @@ def all_pairs(users):
 conf = SparkConf().setAppName("Create graph")
 sc   = SparkContext(conf=conf)
 
-if len(sys.argv < 3):
+if len(sys.argv) < 3:
 	print "Usage: <input-file:string> <output-folder:string> <threshold:double>"
 	raise SystemExit
 
