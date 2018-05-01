@@ -1,5 +1,6 @@
 from pyspark import SparkContext,SparkConf
 import os
+import sys
 
 def all_pairs(users):
 	return [(x,y) for x in users for y in users if x != y]
@@ -7,9 +8,13 @@ def all_pairs(users):
 conf = SparkConf().setAppName("Create graph")
 sc   = SparkContext(conf=conf)
 
-inputFile = "s3a://graph-cd-bucket/ratings.csv"
-outputFile = "s3a://graph-cd-bucket/edges"
-THRESHOLD = 4.0
+if len(sys.argv < 3):
+	print "Usage: <input-file:string> <output-folder:string> <threshold:double>"
+	raise SystemExit
+
+inputFile = sys.argv[1]
+outputFile = sys.argv[2]
+THRESHOLD = float(sys.argv[3])
 
 # Creating a RDD of (movie_id, user_id) for all ratings > THRESHOLD
 sc.broadcast(THRESHOLD)
