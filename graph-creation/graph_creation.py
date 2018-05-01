@@ -15,7 +15,7 @@ THRESHOLD = 4.0
 sc.broadcast(THRESHOLD)
 ratingRecord = sc.textFile(inputFile) \
     .map(lambda line: line.split("\t")) \
-    .map(lambda array: (int(array[0]), int(array[1]), int(array[2]))) \
+    .map(lambda array: (int(array[0]), int(array[1]), float(array[2]))) \
     .filter(lambda (movie, user, rating): rating > THRESHOLD) \
     .map(lambda (movie, user, rating): (movie, user))
 
