@@ -41,11 +41,11 @@ ratingRecord = sc.textFile(inputFile) \
     .filter(lambda (movie, user, rating): rating >= THRESHOLD)
 
 moviesJoined = ratingRecord \
-	.map(lambda (movie, user, rating): (movie, (user, rating)))
+	.map(lambda (movie, user, rating): (movie, (user, rating))) \
 	.leftOuterJoin(movies) \
 	.map(lambda (movie, ((user, rating), (name, genre))): 
-		(user, genre.split("|")))
-	.groupByKey()
+		(user, genre.split("|"))) \
+	.groupByKey() \
 	.map(lambda (user, genreList): (user, map( count, reduce(custom_reduce, genreList))))
 
 ratingRecord = ratingRecord.map(lambda (movie, user, rating): (movie, user))
