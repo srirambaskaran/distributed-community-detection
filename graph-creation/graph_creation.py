@@ -50,16 +50,11 @@ moviesJoined = ratingRecord \
 	.map(lambda (user, numMovies, genreCounts): str(user)+","+str(numMovies)+","+("|".join(map(lambda x: x[0]+":"+str(x[1]), genreCounts))))
 
 moviesJoined.saveAsTextFile(userInfoFolder)
-del moviesJoined
 
 ratingRecord = ratingRecord.map(lambda (user, movie, rating): (movie, user))
 
-
-
 # Grouping by movies and picking users
 coratedUserList = ratingRecord.groupByKey().values()
-
-
 
 # Creating an edge between all pairs of users, set weight to number of corated movies.
 graphEdges = coratedUserList.flatMap(all_pairs) \
