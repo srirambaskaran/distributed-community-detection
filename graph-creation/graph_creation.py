@@ -51,13 +51,13 @@ moviesJoined = ratingRecord \
 
 moviesJoined.saveAsTextFile(userInfoFolder)
 
-ratingRecord = ratingRecord.map(lambda (user, movie, rating): (movie, user))
+ratingRecord = ratingRecord.map(lambda (user, movie, rating): (movie, user)).cache()
 
 # Grouping by movies and picking users
-coratedUserList = ratingRecord.groupByKey().values()
+coratedUserList = ratingRecord.groupByKey().values().cache()
 
 # Creating an edge between all pairs of users, set weight to number of corated movies.
-graphEdges = coratedUserList.flatMap(all_pairs) \
+graphEdges = coratedUserList.flatMap(all_pairs).cache() \
 			.reduceByKey(lambda x,y: x+y) \
 			.map(lambda (users, weight): users+","+str(weight))
 
