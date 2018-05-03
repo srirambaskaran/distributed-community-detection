@@ -38,22 +38,19 @@ movies = sc.parallelize(lines) \
 ratingRecord = sc.textFile(inputFile) \
     .map(lambda line: line.split(",")) \
     .map(lambda array: (int(array[0]), int(array[1]), float(array[2]))) \
-    .filter(lambda (movie, user, rating): rating >= THRESHOLD)
+    .filter(lambda (user, movie, rating): rating >= THRESHOLD)
 
 moviesJoined = ratingRecord \
-	.map(lambda (movie, user, rating): (movie, (user, rating))) \
-	.join(movies)
-
-
-
-moviesJoined = moviesJoined.map(lambda (movie, ((user, rating), (name, genre))): (user, []) if genre is None else (user, genre.split("|"))) \
+	.map(lambda (user, movie, rating): (movie, (user, rating))) \
+	.join(movies) \
+	.map(lambda (movie, ((user, rating), (name, genre))): (user, []) if genre is None else (user, genre.split("|"))) \
 	.groupByKey() \
 	.map(lambda (user, genreList): (user, list(genreList))) \
 	.map(lambda (user, genreList): (user, len(genreList), Counter(reduce(custom_reduce, genreList)).items()))
 
 moviesJoined.saveAsTextFile(userInfoFolder)
 
-ratingRecord = ratingRecord.map(lambda (movie, user, rating): (movie, user))
+ratingRecord = ratingRecord.map(lambda (user, movie, rating): (movie, user))
 
 
  
