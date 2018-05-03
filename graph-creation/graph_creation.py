@@ -47,7 +47,7 @@ moviesJoined = ratingRecord \
 	.groupByKey() \
 	.map(lambda (user, genreList): (user, list(genreList))) \
 	.map(lambda (user, genreList): (user, len(genreList), Counter(reduce(custom_reduce, genreList)).items())) \
-	.map(lambda (user, numMovies, genreCounts): str(user)+","+str(numMovies)+",["+",".join(genreCounts+"]"))
+	.map(lambda (user, numMovies, genreCounts): str(user)+","+str(numMovies)+",["+(",".join(genreCounts))+"]")
 
 moviesJoined.saveAsTextFile(userInfoFolder)
 del moviesJoined
