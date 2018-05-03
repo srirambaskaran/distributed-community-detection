@@ -1,6 +1,7 @@
 from pyspark import SparkContext,SparkConf
 import os
 import sys
+import csv
 from collections import Counter
 
 def custom_reduce(x, y):
@@ -8,11 +9,6 @@ def custom_reduce(x, y):
 	if x is None: return y
 	if y is None: return x
 	return x + y
-
-def count(genre_list):
-	counts = Countet(genre_list)
-	return counts.items()
-
 
 def all_pairs(users):
 	return [((x,y),1) for x in users for y in users if x < y]
@@ -32,9 +28,12 @@ THRESHOLD = float(sys.argv[5])
 
 # Creating a RDD of (movie_id, user_id) for all ratings > THRESHOLD
 sc.broadcast(THRESHOLD)
-movies = sc.textFile(moviesFile) \
-	.map(lambda line: line.split(",")) \
-	.map(lambda array: (int(array[0]), (array[1], array[2])))
+
+reader = csv.reader(open(moviesFile))
+lines = [line for line in reader]
+
+movies = sc.parallelize(lines) \
+	.map(lambda array: (int(array[0]), (array[1], array[2].strip())))
 
 ratingRecord = sc.textFile(inputFile) \
     .map(lambda line: line.split(",")) \
@@ -43,10 +42,14 @@ ratingRecord = sc.textFile(inputFile) \
 
 moviesJoined = ratingRecord \
 	.map(lambda (movie, user, rating): (movie, (user, rating))) \
-	.leftOuterJoin(movies) \
-	.map(lambda (movie, ((user, rating), (name, genre))): (user, genre.split("|"))) \
+	.join(movies)
+
+
+
+moviesJoined = moviesJoined.map(lambda (movie, ((user, rating), (name, genre))): (user, []) if genre is None else (user, genre.split("|"))) \
 	.groupByKey() \
-	.map(lambda (user, genreList): (user, map( count, reduce(custom_reduce, genreList))))
+	.map(lambda (user, genreList): (user, list(genreList))) \
+	.map(lambda (user, genreList): (user, len(genreList), Counter(reduce(custom_reduce, genreList)).items()))
 
 moviesJoined.saveAsTextFile(userInfoFolder)
 
