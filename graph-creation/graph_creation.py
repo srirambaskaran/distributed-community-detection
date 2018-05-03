@@ -35,7 +35,7 @@ lines = [line for line in reader]
 movies = sc.parallelize(lines) \
 	.map(lambda array: (int(array[0]), (array[1], array[2].strip())))
 
-ratingRecord = sc.textFile(inputFile) \
+ratingRecord = sc.textFile(inputFile, , minPartitions=128) \
     .map(lambda line: line.split(",")) \
     .map(lambda array: (int(array[0]), int(array[1]), float(array[2]))) \
     .filter(lambda (user, movie, rating): rating >= THRESHOLD)
