@@ -44,8 +44,7 @@ ratingRecord = sc.textFile(inputFile) \
 moviesJoined = ratingRecord \
 	.map(lambda (movie, user, rating): (movie, (user, rating))) \
 	.leftOuterJoin(movies) \
-	.map(lambda (movie, ((user, rating), (name, genre))): 
-		(user, genre.split("|"))) \
+	.map(lambda (movie, ((user, rating), (name, genre))): (user, genre.split("|"))) \
 	.groupByKey() \
 	.map(lambda (user, genreList): (user, map( count, reduce(custom_reduce, genreList))))
 
