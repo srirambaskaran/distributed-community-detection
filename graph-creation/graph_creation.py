@@ -11,7 +11,7 @@ def custom_reduce(x, y):
 	return x + y
 
 def all_pairs(users):
-	return [((x,y),1) for x in users for y in users if x < y]
+	return [((str(x)+","+str(y)),1) for x in users for y in users if x < y]
 
 conf = SparkConf().setAppName("Create graph")
 sc   = SparkContext(conf=conf)
@@ -46,22 +46,26 @@ moviesJoined = ratingRecord \
 	.map(lambda (movie, ((user, rating), (name, genre))): (user, []) if genre is None else (user, genre.split("|"))) \
 	.groupByKey() \
 	.map(lambda (user, genreList): (user, list(genreList))) \
-	.map(lambda (user, genreList): (user, len(genreList), Counter(reduce(custom_reduce, genreList)).items()))
+	.map(lambda (user, genreList): (user, len(genreList), Counter(reduce(custom_reduce, genreList)).items())) \
+	.map(lambda (user, numMovies, genreCounts): str(user)+","+str(numMovies)+",["+",".join(genreCounts+"]"))
 
 moviesJoined.saveAsTextFile(userInfoFolder)
+del moviesJoined
 
 ratingRecord = ratingRecord.map(lambda (user, movie, rating): (movie, user))
 
 
- 
 
 # Grouping by movies and picking users
 coratedUserList = ratingRecord.groupByKey().values()
 
+
+
 # Creating an edge between all pairs of users, set weight to number of corated movies.
 graphEdges = coratedUserList.flatMap(all_pairs) \
 			.reduceByKey(lambda x,y: x+y) \
-			.map(lambda ((user1, user2), weight): str(user1)+","+str(user2)+","+str(weight))
+			.map(lambda (users, weight): users+","+str(weight))
+
 
 # Write into file
 graphEdges.saveAsTextFile(outputFile)
