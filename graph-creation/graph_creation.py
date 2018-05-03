@@ -20,14 +20,15 @@ def all_pairs(users):
 conf = SparkConf().setAppName("Create graph")
 sc   = SparkContext(conf=conf)
 
-if len(sys.argv) < 4:
+if len(sys.argv) < 5:
 	print "Usage: <input-file:string> <output-folder:string> <movies-info-file:string> <user-info-output:string> <threshold:double>"
 	raise SystemExit
 
 inputFile = sys.argv[1]
 outputFile = sys.argv[2]
 moviesFile = sys.argv[3]
-THRESHOLD = float(sys.argv[4])
+userInfoFolder = sys.argv[4]
+THRESHOLD = float(sys.argv[5])
 
 # Creating a RDD of (movie_id, user_id) for all ratings > THRESHOLD
 sc.broadcast(THRESHOLD)
@@ -47,6 +48,8 @@ moviesJoined = ratingRecord \
 		(user, genre.split("|"))) \
 	.groupByKey() \
 	.map(lambda (user, genreList): (user, map( count, reduce(custom_reduce, genreList))))
+
+moviesJoined.saveAsTextFile(userInfoFolder)
 
 ratingRecord = ratingRecord.map(lambda (movie, user, rating): (movie, user))
 
