@@ -1,3 +1,11 @@
 metastore_db
 metastore_db/*
 derby.log
+*.jar
+*.xml
+*.class
+target
+target/*
+*.iml
+output
+output/*
