@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Graph Communities</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="js/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+
+</head>
+<body>
+	<div class="container">
+		<h1>
+			M<img src="movie_film_camera.png" height="70" width="80" />vie World
+		</h1>
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">Statistics</a></li>
+				<li><a href="#tabs-2">Community Infomration</a></li>
+			</ul>
+			<div id="tabs-1">
+				<div class="row">
+					<div class="col-6 col-md-6 col-sm-12" id="userMovieDistribution"></div>
+					<div class="col-6 col-md-6 col-sm-12" id="degreeDistribution"></div>
+				</div>
+				<br />
+				<br />
+				<div class="row">
+					<div class="col-12 col-md-12 col-sm-12"
+						id="communitySizeDistribution"></div>
+
+				</div>
+			</div>
+			<div id="tabs-2">
+				Click on eaceh of them to know more.
+				<svg width="500" height="400"></svg>
+				 
+				<div id="hover-dialog" height="500px"
+					width="800">
+					<div>
+						Number of nodes: <span id="num-nodes"></span>
+					</div>
+					<!-- <div>Sum of all weights: <span id="sum-weights"></span></div> -->
+					<div class="col-12 col-md-12 col-sm-12" id="communityGenreInfo"></div>
+				</div>
+			</div>
+		</div>
+
+
+		<script src="js/app.js"></script>
+		<script src="js/charts.js"></script>
+		<script>
+		
+	</script>
+	</div>
+</body>
+</html>
