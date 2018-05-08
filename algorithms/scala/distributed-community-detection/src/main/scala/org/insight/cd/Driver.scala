@@ -1,3 +1,5 @@
+package org.insight.cd
+
 import org.apache.spark.graphx.{Edge, Graph}
 import org.apache.spark.{SparkContext, SparkConf}
 import org.apache.log4j.{Level, Logger}
