@@ -1,3 +1,5 @@
+package org.insight.cd.algorithms
+
 import scala.reflect.ClassTag
 
 import org.apache.spark.rdd.RDD

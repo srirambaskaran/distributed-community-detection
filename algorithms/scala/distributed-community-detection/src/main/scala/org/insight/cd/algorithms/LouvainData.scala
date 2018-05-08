@@ -1,3 +1,5 @@
+package org.insight.cd.algorithms
+
 import com.esotericsoftware.kryo.io.{Input, Output}
 import com.esotericsoftware.kryo.{Kryo, KryoSerializable}
 
