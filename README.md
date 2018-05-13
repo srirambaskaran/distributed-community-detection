@@ -1,4 +1,4 @@
-![close-circle](logo.png)
+![close-circle](resources/logo.png)
 
 # Optimized computation of communities in large graphs
 
@@ -6,13 +6,12 @@ This project provides a distributed implementation of community detection algori
 
 This has been implemented using Spark and GraphX packages, using a simple data pipeline which can be easily extended to apply on any kinds of graphs.
 
-1. [Introduction](README.md#introduction)
+1. [Introduction](#introduction)
 1. [Neighborhood Aggregation](#neighborhood-aggregation)
-1. [Graph Partitioning Strategies](README.md#graph-partitioning-strategies)
-1. [Pipeline and Deployment Instructions](README.md#pipeline-and-deployment-instructions)
-1. [Performance metrics](README.md#performance-metrics)
-1. [Datasets](README.md#datasets)
-1. [Future work](README.md#future-work)
+1. [Pipeline and Deployment Instructions](#pipeline-and-deployment-instructions)
+1. [Performance metrics](#performance-metrics)
+1. [Datasets](#datasets)
+1. [Future work](#future-work)
 
 ## Introduction
 
@@ -27,10 +26,16 @@ Louvain community detection algorithm optimizes modularity by identifying the be
 
 ## Neighborhood Aggregation
 
+The algorithm assigns a vertex to a community based on the communities structures of its neighbors. The community of 1 is decided by checking the gain in modularity by adding 1 to the community of 2 or community of 3. If there is negative gain, vertex 1 remains in its own community.
+
+![neighborhood-aggregation](resources/neighborhood-aggregation-1.png)
+
+Here lies the parallelism that can be leveraged. GraphX stores the graph in a edge based partitioning strategy, where each edge is given as a triplet as given below. The triplets are stored as an RDD and partitioned across nodes.
+![neighborhood-aggregation](resources/neighborhood-aggregation-2.png)
 
 ## Pipeline and Deployment Instructions
 
-![pipeline](pipeline.png)
+![pipeline](resources/pipeline.png)
 
 #### Graph input file format
 
@@ -57,8 +62,6 @@ The code is written using scala with SBT build. The web application is a java ba
 ```
 
 You can use [`sbt assembly`](https://github.com/sbt/sbt-assembly) to build the FAT JAR.
-
-## Graph Partitioning Strategies
 
 ## Performance metrics
 
