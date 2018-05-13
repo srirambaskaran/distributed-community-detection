@@ -1,22 +1,75 @@
-~[close-circle](logo.png)
+![close-circle](logo.png)
 
 # Optimized computation of communities in large graphs
 
-This project provides a distributed implementation of communitiy detection algorithm on large graphs. This implements the Louvain community detection algorithm in a distributed way by taking advantaged of the neighborhood agreggation strategy employed in the algorithm. 
+This project provides a distributed implementation of communitiy detection algorithm on large graphs. This implements the Louvain community detection algorithm in a distributed way by taking advantaged of the neighborhood aggregation strategy employed in the algorithm.
 
-This has been implemented using Spark and GraphX packages, using a simple data pipeline which can be easily extended to apply on any kinds of graphs. 
+This has been implemented using Spark and GraphX packages, using a simple data pipeline which can be easily extended to apply on any kinds of graphs.
 
-Contents
-1. [Introduction]()
-1. [Pipeline and Deployment Instructions]()
-1. [Neighborhood Agreggation]()
+
+1. [Introduction](README.md#introduction)
+1. [Pipeline and Deployment Instructions](README.md#pipeline-and-deployment-instructions)
+1. [Neighborhood Aggregation]()
 1. [Graph Partitioning Strategies]()
 1. [Performance metrics]()
 1. [Datasets]()
 1. [Future work]()
 
+## Introduction
 
-## Chanllenges
+Large graphs get generated in multiple forms in various domains.
+
+## Pipeline and Deployment Instructions
+
+![pipeline](pipeline.png)
+
+#### Graph input file format
+
+The graph is stored as a "Graph file" which is a list of edges in the graph. Each line of the graph will have the following format.
+```
+    # prefix comments in the file with a hash
+    vertex1 <space or tab> vertex2
+```
+
+The algorithm is implemented for undirected version of the graph. Extension to directed version will be done in the next round of implementation.
+
+#### Scala + Spark magic
+
+The code is written using scala with SBT build. The web application is a java based web-app that queries the database to provide basic statistics about the communities.
+
+```
+    scala: 2.11.11
+    sbt: 0.13.7
+    spark: 2.2.1 (installed in the cluster, no specific methods that has been deprecated)
+    MySQL: 14.14
+    jQuery + highcharts: latest
+    Tomcat: 9.0 (webapp to display results)
+    Java EE Servlet: 3.0
+```
+
+This repository includes a pre-built package to deploy it, you may also
+
+- S3 for storing initial graph.
+- Spark & GraphX extension.
+- MySQL for persisting graphs.
+- D3 for visualization (Charts + Graph)
+- HTML + JQuery + Ajax (Lazy Loading)
+
+
+
+
+
+## Neighborhood Aggregation
+
+## Graph Partitioning Strategies
+
+## Performance metrics
+
+## Datasets
+
+## Future work
+
+## Challenges
 ### Algorithm
 
 1. Running all pair shortest path algorithm. Efficiently pass short messages across different partitions in Spark.
@@ -32,7 +85,7 @@ Contents
 S3 -> Spark + GraphX -> MySQL -> HTML + D3
 
 
-### Abstract from the paper: 
+### Abstract from the paper:
 
 > A number of recent studies have focused on the statistical properties of networked systems such
 as social networks and the World-Wide Web. Researchers have concentrated particularly on a
@@ -63,5 +116,4 @@ Graphs following simple models like Erdos-Renyi where presence of an edge has eq
 - HTML + JQuery + Ajax (Lazy Loading)
 
 
-Demo -> bit.ly/close-circle
-
+Demo -> [bit.ly/close-circle](bit.ly/close-circle)
