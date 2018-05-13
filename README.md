@@ -2,22 +2,31 @@
 
 # Optimized computation of communities in large graphs
 
-This project provides a distributed implementation of communitiy detection algorithm on large graphs. This implements the Louvain community detection algorithm in a distributed way by taking advantaged of the neighborhood aggregation strategy employed in the algorithm.
+This project provides a distributed implementation of community detection algorithm on large graphs. This implements the Louvain community detection algorithm in a distributed way by taking advantaged of the neighborhood aggregation strategy employed in the algorithm.
 
 This has been implemented using Spark and GraphX packages, using a simple data pipeline which can be easily extended to apply on any kinds of graphs.
 
-
 1. [Introduction](README.md#introduction)
+1. [Neighborhood Aggregation](README.md#neighborhood-agreggation)
+1. [Graph Partitioning Strategies](README.md#graph-partitioning-strategies)
 1. [Pipeline and Deployment Instructions](README.md#pipeline-and-deployment-instructions)
-1. [Neighborhood Aggregation]()
-1. [Graph Partitioning Strategies]()
-1. [Performance metrics]()
-1. [Datasets]()
-1. [Future work]()
+1. [Performance metrics](README.md#performance-metrics)
+1. [Datasets](README.md#datasets)
+1. [Future work](README.md#future-work)
 
 ## Introduction
 
-Large graphs get generated in multiple forms in various domains.
+Graphs provide crucial information of interaction of various things in a given domain. Social network, graph of websites, academic citation networks, co-purchase statistic graph, protein-protein interaction are a few examples where we find really large graphs.  It is difficult for humans to comprehend large graphs and derive insights from them. It needs the aspect of data mining algorithms to help simplify things in a better way.
+
+Community detection is the concept of identifying groups of similar things in a given network. Communities in graphs try to leverage the interactions (or edges) of the network and find communities with nodes that are closely connected. One of the popular measure to identify goodness of communities in a graph is modularity.
+
+### Modularity
+> Graphs with high modularity have **dense connections between the vertices within communities but sparse connections between nodes in different communities**. Modularity is often used in **optimization methods for detecting community structure in networks**.
+
+Louvain community detection algorithm optimizes modularity by identifying the best community of a vertex among all its neighbors. It was initially published in 2008 by Blondel et.al from University of Louvain. The paper is given here. [https://arxiv.org/abs/0803.0476](https://arxiv.org/abs/0803.0476).
+
+## Neighborhood Aggregation
+
 
 ## Pipeline and Deployment Instructions
 
@@ -47,19 +56,7 @@ The code is written using scala with SBT build. The web application is a java ba
     Java EE Servlet: 3.0
 ```
 
-This repository includes a pre-built package to deploy it, you may also
-
-- S3 for storing initial graph.
-- Spark & GraphX extension.
-- MySQL for persisting graphs.
-- D3 for visualization (Charts + Graph)
-- HTML + JQuery + Ajax (Lazy Loading)
-
-
-
-
-
-## Neighborhood Aggregation
+You can use [`sbt assembly`](https://github.com/sbt/sbt-assembly) to build the FAT JAR.
 
 ## Graph Partitioning Strategies
 
@@ -69,51 +66,5 @@ This repository includes a pre-built package to deploy it, you may also
 
 ## Future work
 
-## Challenges
-### Algorithm
 
-1. Running all pair shortest path algorithm. Efficiently pass short messages across different partitions in Spark.
-1. Computing graph measures: Betweenness-centrality
-
-### Technical
-1. Visualizing Large graphs (major constraint too).
-1. Querying graph, providing insights.
-1. Implementing a simple collaborative-filtering recommender system
-
-## Proposed Architecture
-
-S3 -> Spark + GraphX -> MySQL -> HTML + D3
-
-
-### Abstract from the paper:
-
-> A number of recent studies have focused on the statistical properties of networked systems such
-as social networks and the World-Wide Web. Researchers have concentrated particularly on a
-few properties which seem to be common to many networks: **the small-world property, power-law
-degree distributions, and network transitivity**. In this paper, we highlight another property which is
-found in many networks, the property of community structure, in which **network nodes are joined
-together in tightly-knit groups between which there are only looser connections**.
-
-### Modulartiy
-
-Wikipedia:
-
-> Modularity is one **measure of the structure** of networks or graphs. It was designed to measure the **strength of division** of a network into modules (also called groups, clusters or communities). Networks with high modularity have **dense connections between the nodes within modules but sparse connections between nodes in different modules**. Modularity is often used in **optimization methods for detecting community structure in networks**. However, it has been shown that modularity suffers a resolution limit and, therefore, it is unable to detect small communities. Biological networks, including animal brains, exhibit a high degree of modularity.
-
-## What types of graphs will it work on?
-
-This algorithm works for particular types of network where we can expect a tight knit group of nodes _interacting_ within the group and not outside the group. We can see similar behavior in social network graphs and people's interests in things.
-
-## What types of graphs won't it work on?
-
-Graphs following simple models like Erdos-Renyi where presence of an edge has equal probability across the entire network. You can find more details [here](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model).
-
-## Technologies
-- S3 for storing initial graph.
-- Spark & GraphX extension.
-- MySQL for persisting graphs.
-- D3 for visualization (Charts + Graph)
-- HTML + JQuery + Ajax (Lazy Loading)
-
-
-Demo -> [bit.ly/close-circle](bit.ly/close-circle)
+Analysis of communities => [bit.ly/close-circle](bit.ly/close-circle)
