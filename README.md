@@ -1,4 +1,4 @@
-![close-circle](resources/logo.png)
+<img src="resources/logo.png" width="250px" />
 
 # Optimized computation of communities in large graphs
 
@@ -37,15 +37,15 @@ The following section discusses the parallelism in the algorithm that has been u
 
 The algorithm assigns a vertex to a community based on the communities structures of its neighbors. The community of 1 is decided by checking the gain in modularity by adding 1 to the community of 2 or community of 3. If there is negative gain, vertex 1 remains in its own community.
 
-![neighborhood-aggregation](resources/neighborhood-aggregation-1.png)
+<img src="resources/neighborhood-aggregation-1.png" width="600px" />
 
 Here lies the parallelism that can be leveraged. GraphX stores the graph in a edge based partitioning strategy, where each edge is given as a triplet as given below. The triplets are stored as an RDD and partitioned across nodes. The change in modularity of adding a node to its neighbor's community is calculated and stored in each of the edge as shown below.
 
-![neighborhood-aggregation](resources/neighborhood-aggregation-2.png)
+<img src="resources/neighborhood-aggregation-2.png" width="600px" />
 
 Spark RDDs can be transformed into new RDDs. GraphX uses similar strategy when transforming the EdgeRDD when we apply a `map` operation on the triplets. The information about change in modularity can be transmitted to the vertices using `aggregateMessages()` function in GraphX. The decision to choose a node is identified in a `vertexProg` and
 
-![aggregate-messages](resources/aggregate-messages.png)
+<img src="resources/aggregate-messages.png" width="600px" />
 
 
 ## Pipeline and Deployment Instructions
@@ -96,7 +96,7 @@ Here is the configuration of spark cluster.
 
 The distributed implementation has been compared with a single-machine implementation of the algorithm. I have used off-the shelf implementation of louvain algorithm given by [taynaud/python-louvain](https://github.com/taynaud/python-louvain), which uses [networkx](https://networkx.github.io/) graph internally. The algorithm is present in `single-machine/louvain.py`. Single machine implementation was run on the master node of the spark cluster. The cluster is dedicated to run these algorithms and not `time-shared`.
 
-![performance](resources/performance.png)
+<img src="resources/performance.png" width="600px" />
 
 The single-machine implementation finish to perform when tested on a graph with 4 million nodes and 34 million edges. The distributed version completed successfully in 1 hour.
 
