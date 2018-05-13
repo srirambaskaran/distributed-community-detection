@@ -7,7 +7,7 @@ This project provides a distributed implementation of community detection algori
 This has been implemented using Spark and GraphX packages, using a simple data pipeline which can be easily extended to apply on any kinds of graphs.
 
 1. [Introduction](README.md#introduction)
-1. [Neighborhood Aggregation](README.md#neighborhood-agreggation)
+1. [Neighborhood Aggregation](#neighborhood-aggregation)
 1. [Graph Partitioning Strategies](README.md#graph-partitioning-strategies)
 1. [Pipeline and Deployment Instructions](README.md#pipeline-and-deployment-instructions)
 1. [Performance metrics](README.md#performance-metrics)
