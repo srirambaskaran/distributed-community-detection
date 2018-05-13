@@ -12,7 +12,7 @@ This has been implemented using Spark and GraphX packages, using a simple data p
 1. [Pipeline and Deployment Instructions](#pipeline-and-deployment-instructions)
 1. [Performance metrics](#performance-metrics)
 1. [Datasets](#datasets)
-1. [Future work](#future-work)
+1. [Conclusion & Future work](#conclusion--future-work)
 
 ## Introduction
 
