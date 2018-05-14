@@ -122,4 +122,4 @@ Some of the future work on this.
 1. Use a better architecture of the clusters with more memory and disk.
 
 
-Analysis of communities => [bit.ly/close-circle](bit.ly/close-circle)
+Analysis of communities => [bit.ly/close-circle](http://bit.ly/close-circle)
