@@ -2,7 +2,7 @@ package org.insight.cd.utils
 
 import org.apache.spark.SparkContext
 import org.apache.spark.graphx._
-import org.insight.cd.algorithms.VertedData
+import org.insight.cd.algorithms.VertexData
 
 object GraphXReader {
 
@@ -18,7 +18,7 @@ object GraphXReader {
     }
 
     def createLouvainGraph(file: String, sc: SparkContext):
-    Graph[VertedData, Long] = {
+    Graph[VertexData, Long] = {
         val graph = createGraph(file, sc)
 
         val nodeWeights = graph.aggregateMessages(
@@ -31,7 +31,7 @@ object GraphXReader {
 
         graph.outerJoinVertices(nodeWeights)((vid, data, degreeOption) => {
             val degree = degreeOption.getOrElse(0L)
-            new VertedData(vid, 0L, degree, false)
+            new VertexData(vid, 0L, degree, false)
         }).partitionBy(PartitionStrategy.EdgePartition2D).groupEdges(_ + _)
     }
 }

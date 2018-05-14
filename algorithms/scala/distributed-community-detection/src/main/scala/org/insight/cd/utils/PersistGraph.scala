@@ -1,34 +1,88 @@
 package org.insight.cd.utils
 
-import org.apache.spark.{SparkConf, SparkContext}
+import java.sql.{Connection, DriverManager, PreparedStatement}
 
-import org.neo4j.spark._
-import scala.collection.JavaConverters._
+import java.util.Properties
+
+import org.apache.spark.graphx.Graph
+import org.insight.cd.algorithms.VertexData
 
 
 object PersistGraph {
-    def main(args: Array[String]): Unit = {
-        val graphFile = args{0}
-        val moviesInfo = args{1}
-
-        val conf : SparkConf = new SparkConf().setAppName("All pair shortest path")
-        conf.set("spark.neo4j.bolt.url","bolt://34.211.3.246:7687")
-        conf.set("spark.neo4j.bolt.user","neo4j")
-        conf.set("spark.neo4j.bolt.password","I@mR00t")
-
-        val sc : SparkContext = new SparkContext(conf)
-
-        val reader = new GraphXReader()
-        val graph = reader.getGraph(graphFile, sc, 30)
 
 
-        val movies = sc.textFile(moviesInfo)
-            .map(line => line.split(","))
-            .map(array => (array{0}.toLong, List(Map("vertex_id"-> array{0}.toLong, "title"->array.slice(1, array.length - 1).mkString(","), "genre"->array{array.length-1}).asJava).asJava)).collect().toMap
 
-        val propertiesIngraph = graph.mapVertices((vertexId, _) => movies(vertexId))
+    def storeGraph(graph: Graph[VertexData, Long], properties: Properties): Unit = {
 
-        Neo4jGraph.saveGraph(sc, propertiesIngraph, nodeProp = "movieInfo")
+        val host = properties.getProperty("mysql.host")
+        val port = properties.getProperty("mysql.port")
+        val user = properties.getProperty("mysql.user")
+        val pass = properties.getProperty("mysql.password")
+        val db = properties.getProperty("mysql.defaultDB")
+
+
+        Class.forName("com.mysql.cj.jdbc.Driver").newInstance
+        val con: Connection = DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+db, user, pass)
+        con.setAutoCommit(false)
+
+        val nodesRDD = graph.vertices.map {
+            case (vertexId, data) =>
+                (vertexId, data.community, data.internalTotalEdgeWeight, data.degree)
+        }
+
+        val communities = nodesRDD.map{
+            case (_, communityId, internalWeight, degree) =>
+                (communityId.toInt, internalWeight.toInt, degree.toInt)
+        }.distinct().collect()
+
+        val communityInsert: PreparedStatement = con.prepareStatement("INSERT IGNORE INTO Community VALUES (?,?,?)")
+
+        communities.foreach{
+            case (communityId, internalWeight, degree) =>
+                communityInsert.setInt(1, communityId)
+                communityInsert.setInt(2, internalWeight)
+                communityInsert.setInt(3, degree)
+                communityInsert.addBatch()
+        }
+
+        communityInsert.executeLargeBatch()
+        con.commit()
+
+        val nodes = nodesRDD.collect()
+
+        val nodeInsert: PreparedStatement = con.prepareStatement("INSERT INTO Node VALUES (?,?) ON DUPLICATE KEY UPDATE community_id=?")
+
+        nodes.foreach {
+            case (vertexId, communityId, _, _) =>
+                nodeInsert.setInt(1, vertexId.toInt)
+                nodeInsert.setInt(2, communityId.toInt)
+                nodeInsert.setInt(3, communityId.toInt)
+                nodeInsert.addBatch()
+        }
+
+        nodeInsert.executeLargeBatch()
+        con.commit()
+
+        val edges = graph.triplets.map {
+            triplet =>
+                (triplet.srcId.toInt, triplet.dstId.toInt)
+        }.collect()
+
+        val edgeInsert: PreparedStatement = con.prepareStatement("INSERT IGNORE INTO Edge VALUES (?,?)")
+
+
+
+        edges.foreach{
+            case (srcId, dstId) =>
+                edgeInsert.setInt(1, srcId)
+                edgeInsert.setInt(2, dstId)
+                edgeInsert.addBatch()
+        }
+
+        edgeInsert.executeLargeBatch()
+        con.commit()
+        con.close()
+        println("Inserted everything")
 
     }
 }
